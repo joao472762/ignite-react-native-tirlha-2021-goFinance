@@ -1,4 +1,5 @@
 import { View,Text } from "react-native";
+import { Title } from "./style";
 
 interface HomeProps  {
     title: string
@@ -6,7 +7,9 @@ interface HomeProps  {
 export function Home({title}: HomeProps){
     return(
         <View>
-            <Text>{title}</Text>
+            <Title>
+                {title}
+            </Title>
         </View>
     )
 }
