@@ -4,9 +4,6 @@ import * as SplashScreen from 'expo-splash-screen'
 import { ReactNode, useCallback, useEffect, useState } from "react";
 import {Poppins_500Medium, Poppins_400Regular, Poppins_700Bold} from '@expo-google-fonts/poppins'
 
-
-
-
 interface FontProviderProps{
     children: ReactNode
 }
@@ -39,7 +36,7 @@ export function FontProvider({children}:FontProviderProps){
           await SplashScreen.hideAsync();
         }
     }, [appIsReady]);
-    
+        
     if (!appIsReady) {
         return null;
     }

@@ -3,7 +3,7 @@ import { ThemeProvider } from 'styled-components';
 
 import { Dashboard } from './src/Screens/Dashboard';
 import { defaultTheme } from './src/global/styles/theme';
-import { FontProvider } from './src/context/fontsProvider';
+import { FontProvider } from './src/context/font';
 
 export default function App() {
   return (
@@ -12,7 +12,7 @@ export default function App() {
       <StatusBar
         backgroundColor = 'transparent'
         translucent 
-        style="dark" 
+        style="light" 
       />
         <Dashboard/>
       </ThemeProvider>
