@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Dashboard } from './src/Screens/Dashboard';
 import { defaultTheme } from './src/global/styles/theme';
 import { FontProvider } from './src/context/font';
+import { NewTransactionForm } from './src/Screens/Dashboard/NewTransactionForm';
 
 export default function App() {
   return (
@@ -14,7 +15,7 @@ export default function App() {
         translucent 
         style="light" 
       />
-        <Dashboard/>
+        <NewTransactionForm/>
       </ThemeProvider>
     </FontProvider>
 
