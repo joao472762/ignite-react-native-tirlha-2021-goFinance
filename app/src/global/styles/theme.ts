@@ -15,6 +15,7 @@ export const defaultTheme = {
         
         title: 'rgb(54, 63, 95)',
         text: 'rgb(150, 156, 178)',
+        text_dark: 'rgb(0,0,0)' ,
         shape: 'rgb(250, 250, 250)' ,
         background: 'rgb(240, 242, 245)' ,
     },
