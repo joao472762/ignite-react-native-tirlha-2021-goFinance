@@ -11,7 +11,7 @@ export const defaultTheme = {
         successLight: 'rgba(18, 164, 84, 0.5)' ,
         
         alert: 'rgb(232, 63, 91)' ,
-        alertLight: 'rgb(232, 63, 91, 0.5)' ,
+        alertLight: 'rgba(232, 63, 91, 0.5)' ,
         
         title: 'rgb(54, 63, 95)',
         text: 'rgb(150, 156, 178)',
