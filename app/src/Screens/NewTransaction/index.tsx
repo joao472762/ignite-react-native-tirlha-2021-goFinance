@@ -1,8 +1,10 @@
 import { useState } from "react";
 
+import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { Input } from "../../components/Form/input";
-import { Button } from "../../components/Form/Button";
+import { SelectCategory } from "../../components/Form/SelectCategory";
+import { SelectCategoryModal } from "./components/SelectCategoryModal";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
 import {
     Form,
@@ -10,14 +12,32 @@ import {
     TransactionsType,
     NewTransactionContainer,
 } from './styles'
-import { SelectCategory } from "../../components/Form/SelectCategory";
 
+export interface categorySelectedProps {
+    key: string,
+    name: string,
+    icon: string,
+    color: string
+}
 
 export function NewTransaction(){
+    const [modalIsVisible, setModalIsVisible] = useState(false)
+    const [categorySelected, setCategorySelected] = useState<categorySelectedProps>()
     const [transactionTypeSelected, setTransactionTypeSelected] = useState<'income' |'outcome'|''>('')
 
     function handleSelectTransactionType(transactionType: 'income' | 'outcome'){
         setTransactionTypeSelected(transactionType)
+    }
+
+    function handleSelectCategory(category: categorySelectedProps){
+        setCategorySelected(category)
+    }
+
+    function handleOpenSectCategoryModal(){
+        setModalIsVisible(true)
+    }
+    function handleCloseSectCategoryModal(){
+        setModalIsVisible(false)
     }
    
     return(
@@ -42,14 +62,23 @@ export function NewTransaction(){
                         />
 
                     </TransactionsType>
-                    <SelectCategory title="Categoria"/>
+                    <SelectCategory 
+                        title={categorySelected ? categorySelected.name : 'Categoria'}
+                        onPress={handleOpenSectCategoryModal}
+                    />
                 </InputsArea>
-
-
 
                 <Button title="Enviar"/>
 
             </Form>
+            
+            <SelectCategoryModal 
+                animationType = 'slide'
+                visible={modalIsVisible}
+                onSelectCategory={handleSelectCategory}
+                closeSectCategoryModal = {handleCloseSectCategoryModal}
+                categoryKeyAlreadySelected={categorySelected ? categorySelected.key : ''}
+            />
         </NewTransactionContainer>
     )
 }

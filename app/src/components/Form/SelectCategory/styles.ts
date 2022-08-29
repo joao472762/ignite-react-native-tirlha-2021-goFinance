@@ -1,7 +1,9 @@
-import styled from "styled-components/native"
 import {Feather} from '@expo/vector-icons'
+import styled from "styled-components/native"
+import { TouchableOpacity } from "react-native"
 import { RFValue } from "react-native-responsive-fontsize"
-export const SelectCategoryContainer = styled.TouchableOpacity.attrs({
+
+export const SelectCategoryContainer = styled(TouchableOpacity).attrs({
     activeOpacicy: 0.7
 })`
     flex-direction: row;

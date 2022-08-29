@@ -1,6 +1,6 @@
+import { Feather } from '@expo/vector-icons'
 import styled from "styled-components/native";
 import { RFValue } from "react-native-responsive-fontsize";
-import {Feather} from '@expo/vector-icons'
 
 export const TransactionContainer = styled.View`
     padding: 17px 24px 18px;
@@ -48,17 +48,22 @@ export const Category = styled.View`
 `
 
 export const Icon = styled(Feather)`
- font-size: ${RFValue(20)}px;
+ font-size: ${RFValue(24)}px;
  color: ${( {theme}) => theme.colors.text};
+
 `
 
 export const CategoryName = styled.Text`
     font-size: ${RFValue(14)}px;
+    font-family: ${( {theme} ) => theme.fonts.PoppinsRegular};
+
     margin-left: ${RFValue(12)}px;
     color: ${( {theme}) => theme.colors.text};
 `
 
 export const CriationDate = styled.Text`
-    font-size: ${RFValue(14)}px;
-    color: ${( {theme}) => theme.colors.text};
+        color: ${( {theme}) => theme.colors.text};
+
+        font-size: ${RFValue(14)}px;
+        font-family: ${( {theme} ) => theme.fonts.PoppinsRegular};
 `

@@ -18,6 +18,7 @@ export const defaultTheme = {
         text_dark: 'rgb(0,0,0)' ,
         shape: 'rgb(250, 250, 250)' ,
         background: 'rgb(240, 242, 245)' ,
+        overlay: 'rgb(210, 212, 215)' 
     },
     
     fonts:{
