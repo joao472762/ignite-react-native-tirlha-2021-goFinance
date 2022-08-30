@@ -1,8 +1,9 @@
 import { useState } from "react";
+import { InputForm } from "../../components/InputForm";
+import { useForm,Controller, FormProvider} from "react-hook-form";
 
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
-import { Input } from "../../components/Form/input";
 import { SelectCategory } from "../../components/Form/SelectCategory";
 import { SelectCategoryModal } from "./components/SelectCategoryModal";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
@@ -13,72 +14,104 @@ import {
     NewTransactionContainer,
 } from './styles'
 
-export interface categorySelectedProps {
-    key: string,
+
+export interface CreateNewTransactionSchema {
     name: string,
-    icon: string,
-    color: string
+    type: string,
+    amount: string,
+    category: {
+        name: string,
+        key: string,
+    }
 }
 
 export function NewTransaction(){
     const [modalIsVisible, setModalIsVisible] = useState(false)
-    const [categorySelected, setCategorySelected] = useState<categorySelectedProps>()
-    const [transactionTypeSelected, setTransactionTypeSelected] = useState<'income' |'outcome'|''>('')
 
-    function handleSelectTransactionType(transactionType: 'income' | 'outcome'){
-        setTransactionTypeSelected(transactionType)
-    }
+    const newTransactionForm = useForm<CreateNewTransactionSchema>({});
 
-    function handleSelectCategory(category: categorySelectedProps){
-        setCategorySelected(category)
-    }
+    const { 
+        watch ,
+        reset, 
+        handleSubmit, 
+        control,
+        formState: {  isSubmitting} 
 
+    } = newTransactionForm
+  
     function handleOpenSectCategoryModal(){
         setModalIsVisible(true)
     }
+
     function handleCloseSectCategoryModal(){
         setModalIsVisible(false)
     }
-   
+    
+    function handleCreateNewTransaction(data: CreateNewTransactionSchema){
+        console.log(data)
+        reset()
+    }
+        
+    const currentCaterogy = watch('category')
+    const currentTransactionType = watch('type')
+
     return(
         <NewTransactionContainer>
             <Header title='Cadastro'/>
 
             <Form>
                 <InputsArea>
-                    <Input placeholder="Nome"  />
-                    <Input placeholder="Preço"/>
 
-                    <TransactionsType>
-                        <TransactionTypeButton
-                            type="Income"
-                            isActive={transactionTypeSelected === 'income'}
-                            onPress={() => handleSelectTransactionType('income')}
-                        />
-                        <TransactionTypeButton
-                            type="Outcome"
-                            isActive={transactionTypeSelected === 'outcome'}
-                            onPress={() => handleSelectTransactionType('outcome')}
-                        />
+                    <InputForm
+                        name="name"
+                        placeholder="Nome"
+                        control={control}
+                    />
+                    <InputForm
+                        name="amount"
+                        placeholder="preço"
+                        control={control}
+                    />
+      
+                    <Controller
+                        name="type"
+                        control={control}
+                        render = {( {field} ) => (
+                            <TransactionsType>
+                                <TransactionTypeButton
+                                    type="Income"
+                                    onPress={ () => {field.onChange('income') }}
+                                    isActive={currentTransactionType === 'income'}
+                                />
+                                <TransactionTypeButton
+                                    type="Outcome"
+                                    onPress={ () => {field.onChange('outcome') }}
+                                    isActive={currentTransactionType === 'outcome'}
+                                   
+                                />
+                            </TransactionsType>
+                        )}
+                    />
 
-                    </TransactionsType>
                     <SelectCategory 
-                        title={categorySelected ? categorySelected.name : 'Categoria'}
+                        title={currentCaterogy.name || 'Categoria'}
                         onPress={handleOpenSectCategoryModal}
                     />
                 </InputsArea>
 
-                <Button title="Enviar"/>
-
+                <Button 
+                    title="Enviar" onPress={handleSubmit(handleCreateNewTransaction)}
+                    disabled = {isSubmitting}
+                />
             </Form>
+
+            <FormProvider {...newTransactionForm}>
+                <SelectCategoryModal 
+                    visible={modalIsVisible} 
+                    closeSectCategoryModal = {handleCloseSectCategoryModal}
+                />
+            </FormProvider>
             
-            <SelectCategoryModal 
-                animationType = 'slide'
-                visible={modalIsVisible}
-                onSelectCategory={handleSelectCategory}
-                closeSectCategoryModal = {handleCloseSectCategoryModal}
-                categoryKeyAlreadySelected={categorySelected ? categorySelected.key : ''}
-            />
         </NewTransactionContainer>
     )
 }
