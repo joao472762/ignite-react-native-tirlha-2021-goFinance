@@ -1,9 +1,11 @@
+import * as yup from 'yup'
 import { useState } from "react";
-import { InputForm } from "../../components/InputForm";
+import { yupResolver} from '@hookform/resolvers/yup'
 import { useForm,Controller, FormProvider} from "react-hook-form";
 
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
+import { InputForm } from "../../components/InputForm";
 import { SelectCategory } from "../../components/Form/SelectCategory";
 import { SelectCategoryModal } from "./components/SelectCategoryModal";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
@@ -13,9 +15,19 @@ import {
     TransactionsType,
     NewTransactionContainer,
 } from './styles'
+import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 
 
-export interface CreateNewTransactionSchema {
+const NewTransactionSchema = yup.object().shape({
+    name: yup.string().required('Nome é obrigatório'),
+    amount: 
+    yup.number()
+        .typeError('digite um número')
+        .positive('digite um número positivo')
+        .required('digite algum valor')
+})
+
+export interface CreateNewTransactionSchema  {
     name: string,
     type: string,
     amount: string,
@@ -28,14 +40,22 @@ export interface CreateNewTransactionSchema {
 export function NewTransaction(){
     const [modalIsVisible, setModalIsVisible] = useState(false)
 
-    const newTransactionForm = useForm<CreateNewTransactionSchema>({});
+    const newTransactionForm = useForm<CreateNewTransactionSchema>({
+        resolver: yupResolver(NewTransactionSchema),
+        defaultValues:({
+            category:{
+                name:'',
+                key: ''
+            }
+        })
+    });
 
     const { 
         watch ,
         reset, 
         handleSubmit, 
         control,
-        formState: {  isSubmitting} 
+        formState: { isSubmitting,errors} 
 
     } = newTransactionForm
   
@@ -48,7 +68,16 @@ export function NewTransaction(){
     }
     
     function handleCreateNewTransaction(data: CreateNewTransactionSchema){
+        if(!data.type){
+            return Alert.alert('selecione o tipo da tansação')
+        }
+
+        if(!data.category.name){
+            return Alert.alert('Selecione uma categoria')
+        }
+        
         console.log(data)
+      
         reset()
     }
         
@@ -56,62 +85,70 @@ export function NewTransaction(){
     const currentTransactionType = watch('type')
 
     return(
-        <NewTransactionContainer>
-            <Header title='Cadastro'/>
+        <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
 
-            <Form>
-                <InputsArea>
+            <NewTransactionContainer>
+                <Header title='Cadastro'/>
 
-                    <InputForm
-                        name="name"
-                        placeholder="Nome"
-                        control={control}
+                <Form>
+                    <InputsArea>
+
+                        <InputForm
+                            name = "name"
+                            placeholder ="Nome"
+                            control = {control}
+                            autoCapitalize ={ 'sentences'}
+                            autoCorrect = {false}
+                            error = {errors.name && errors.name.message}
+                        />
+                        <InputForm
+                            name="amount"
+                            placeholder="preço"
+                            control={control}
+                            keyboardType={'numeric'}
+                            error = {errors.amount && errors.amount.message}
+                        />
+        
+                        <Controller
+                            name="type"
+                            control={control}
+                            render = {( {field} ) => (
+                                <TransactionsType>
+                                    <TransactionTypeButton
+                                        type="Income"
+                                        onPress={ () => {field.onChange('income') }}
+                                        isActive={currentTransactionType === 'income'}
+                                    />
+                                    <TransactionTypeButton
+                                        type="Outcome"
+                                        onPress={ () => {field.onChange('outcome') }}
+                                        isActive={currentTransactionType === 'outcome'}
+                                    
+                                    />
+                                </TransactionsType>
+                            )}
+                        />
+
+                        <SelectCategory 
+                            title={currentCaterogy.name || 'Categoria'}
+                            onPress={handleOpenSectCategoryModal}
+                        />
+                    </InputsArea>
+
+                    <Button 
+                        title="Enviar" onPress={handleSubmit(handleCreateNewTransaction)}
+                        disabled = {isSubmitting}
                     />
-                    <InputForm
-                        name="amount"
-                        placeholder="preço"
-                        control={control}
-                    />
-      
-                    <Controller
-                        name="type"
-                        control={control}
-                        render = {( {field} ) => (
-                            <TransactionsType>
-                                <TransactionTypeButton
-                                    type="Income"
-                                    onPress={ () => {field.onChange('income') }}
-                                    isActive={currentTransactionType === 'income'}
-                                />
-                                <TransactionTypeButton
-                                    type="Outcome"
-                                    onPress={ () => {field.onChange('outcome') }}
-                                    isActive={currentTransactionType === 'outcome'}
-                                   
-                                />
-                            </TransactionsType>
-                        )}
-                    />
+                </Form>
 
-                    <SelectCategory 
-                        title={currentCaterogy.name || 'Categoria'}
-                        onPress={handleOpenSectCategoryModal}
+                <FormProvider {...newTransactionForm}>
+                    <SelectCategoryModal 
+                        visible={modalIsVisible} 
+                        closeSectCategoryModal = {handleCloseSectCategoryModal}
                     />
-                </InputsArea>
-
-                <Button 
-                    title="Enviar" onPress={handleSubmit(handleCreateNewTransaction)}
-                    disabled = {isSubmitting}
-                />
-            </Form>
-
-            <FormProvider {...newTransactionForm}>
-                <SelectCategoryModal 
-                    visible={modalIsVisible} 
-                    closeSectCategoryModal = {handleCloseSectCategoryModal}
-                />
-            </FormProvider>
-            
-        </NewTransactionContainer>
+                </FormProvider>
+                
+            </NewTransactionContainer>
+        </TouchableWithoutFeedback>
     )
 }

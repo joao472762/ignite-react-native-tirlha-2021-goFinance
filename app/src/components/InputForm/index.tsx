@@ -3,6 +3,7 @@ import { TextInputProps } from "react-native";
 import { Control, Controller } from "react-hook-form";
 
 import { Input } from "../Form/input";
+import { ErrorMenssage } from "./styles";
 
 interface FormControlProps {
     name: string,
@@ -17,21 +18,26 @@ interface FormControlProps {
 
 interface InputFormProps extends TextInputProps {
     control: Control<FormControlProps>
-    name: 'type' | 'amount' | 'name'| 'category'
+    name: 'type' | 'amount' | 'name'
+    error: string | undefined
 }
 
-export function InputForm({control,name, ...rest}: InputFormProps){
+export function InputForm({control,name,error, ...rest}: InputFormProps){
     return(
-        <Controller 
-            control={control}
-            name={name}
-            render={({field:{onChange,value}}) => (
-                <Input 
-                    {...rest}
-                    value={value.toString()}
-                    onChangeText={onChange}
-                />
-            )}
-        />
+        <>
+
+            <Controller 
+                control={control}
+                name={name}
+                render={({field:{onChange,value}}) => (
+                    <Input 
+                        {...rest}
+                        value={value}
+                        onChangeText={onChange}
+                    />
+                )}
+            />
+            {error && <ErrorMenssage>{error}</ErrorMenssage>}
+        </>
     )
 }
