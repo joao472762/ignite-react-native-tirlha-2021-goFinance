@@ -1,5 +1,5 @@
 import * as yup from 'yup'
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { yupResolver} from '@hookform/resolvers/yup'
 import { useForm,Controller, FormProvider} from "react-hook-form";
 
@@ -19,6 +19,7 @@ import {
     NewTransactionContainer,
 } from './styles'
 import { useNavigation } from '@react-navigation/native';
+import { TransactionsContext } from '../../context/TrasactionsContext';
 
 
 const NewTransactionSchema = yup.object().shape({
@@ -32,7 +33,7 @@ const NewTransactionSchema = yup.object().shape({
 
 export interface CreateNewTransactionSchema  {
     name: string,
-    type: string,
+    type: 'income' | 'outcome',
     amount: string,
     category: {
         name: string,
@@ -43,6 +44,7 @@ export interface CreateNewTransactionSchema  {
 export function NewTransaction(){
     const [modalIsVisible, setModalIsVisible] = useState(false)
     const navigation = useNavigation()
+    const {addNewTransaction} = useContext(TransactionsContext)
 
     const newTransactionForm = useForm<CreateNewTransactionSchema>({
         resolver: yupResolver(NewTransactionSchema),
@@ -96,8 +98,8 @@ export function NewTransaction(){
                 amount,
                 name,
                 type,
-                id: uuid.v4(), 
-                createdDate: new Date(),
+                id: uuid.v4() as string, 
+                createdDate: String(new Date()),
                 categoryKey: category.key,
             }
             
@@ -113,6 +115,7 @@ export function NewTransaction(){
             
             const storageUpdatedInStringfy = JSON.stringify(storageUpdated)
             await AsyncStorage.setItem(dataKey, storageUpdatedInStringfy)
+            addNewTransaction(newTranasction)
 
         }
         catch(error){

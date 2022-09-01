@@ -11,6 +11,7 @@ import {
 } from './styles'
 
 import {categories} from '../../../../utils/categories'
+import { dateFormatter, priceFormatter } from '../../../../utils/formater'
 
 
 interface transactionProps {
@@ -34,7 +35,7 @@ export function Transaction({data}:transactionProps){
             <Description>{name}</Description>
             <PriceHighlight type={type}>
                 {type === 'outcome' && '- '}
-                {price}
+                {priceFormatter.format(Number(price))}
             </PriceHighlight>
 
             <TransactionFooter>
@@ -42,7 +43,7 @@ export function Transaction({data}:transactionProps){
                     <Icon name={category?.icon}/>
                     <CategoryName>{category?.name}</CategoryName>
                 </Category>
-                <CriationDate>{'2020'}</CriationDate>
+                <CriationDate>{dateFormatter.format(new Date(createdDate))}</CriationDate>
 
             </TransactionFooter>
         </TransactionContainer>

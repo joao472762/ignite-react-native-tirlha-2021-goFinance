@@ -5,13 +5,14 @@ interface TransactionsProps  {
     id: string
     name: string,
     amount: string,
-    createdDate: string
+    createdDate: string,
     categoryKey: string
     type: 'income' | 'outcome'
 }
 
 interface TransactionsContextType {
     transactions: TransactionsProps[]
+    addNewTransaction: (newTransaction: TransactionsProps) => void
 }
 
 export const TransactionsContext = createContext({} as TransactionsContextType)
@@ -36,8 +37,16 @@ export  function TransactionsProvider({children}:TransactionsProviderProps){
          loadTransactions()
     },[])
 
+    function addNewTransaction(newTransaction: TransactionsProps){
+        setTransactions(state => [newTransaction, ...state])
+    }
+
     return(
-        <TransactionsContext.Provider value={{transactions}}>
+        <TransactionsContext.Provider value={{
+            transactions,
+            addNewTransaction
+        }}
+        >
             {children}
         </TransactionsContext.Provider>
     )

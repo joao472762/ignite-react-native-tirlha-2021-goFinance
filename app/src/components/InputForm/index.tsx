@@ -7,7 +7,7 @@ import { ErrorMenssage } from "./styles";
 
 interface FormControlProps {
     name: string,
-    type: string,
+    type: 'income' | 'outcome'
     amount: string,
     category: {
         name: string,

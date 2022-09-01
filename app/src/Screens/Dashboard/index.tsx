@@ -1,10 +1,10 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useContext, useEffect, useState } from "react";
-import { FlatList, Text, View } from "react-native";
+import { FlatList} from "react-native";
+import React, { useContext} from "react";
 import { getBottomSpace } from "react-native-iphone-x-helper";
 import { TransactionsContext } from "../../context/TrasactionsContext";
 
 import { Header } from "./components/Header";
+import { useSumary } from "../../hooks/sumary";
 import { HighlighCard } from "./components/HighlighCard";
 import { Transaction } from "./components/Tranasaction";
 import { 
@@ -13,17 +13,11 @@ import {
     TransactionsContainer,
     Title,
 } from "./styles";
+import { dateFormatterWithoutYear } from "../../utils/formater";
 
-interface TransactionProps  {
-    id: string
-    name: string,
-    amount: string,
-    createdDate: string
-    categoryKey: string
-    type: 'income' | 'outcome'
-}
 export function Dashboard(){
     const {transactions} = useContext(TransactionsContext)
+    const {sumaryFormated, dateUpdateFormated} = useSumary()
     
     return(
         <DashBoardContainer>
@@ -34,20 +28,20 @@ export function Dashboard(){
                     <HighlighCard
                         type="income"
                         title="Entrada"
-                        amount="R$ 17.400,00"
-                        lastAleration="Última entrada dia 13 de abri"
+                        amount={sumaryFormated.income.amount}
+                        lastAleration={`Útima entrada ${sumaryFormated.income.lastUpdate}`}
                     />
                     <HighlighCard
                         type="outcome"
                         title="Saída"
-                        amount="R$ 17.400,00"
-                        lastAleration="Última entrada dia 13 de abri"
+                        amount={sumaryFormated.outcome.amount}
+                        lastAleration={`Útima saída ${sumaryFormated.outcome.lastUpdate}`}
                     />
                     <HighlighCard
                         type="total"
                         title="Total"
-                        amount="R$ 17.400,00"
-                        lastAleration="Última entrada dia 13 de abri"
+                        amount={sumaryFormated.total.amount}
+                        lastAleration={`${dateUpdateFormated.firstUpdate} á ${dateUpdateFormated.lastUpdate}`}
                     />
                     
                 </HighlighCardsContainer>
@@ -76,7 +70,6 @@ export function Dashboard(){
                     />
                 </TransactionsContainer>
              
-        
         </DashBoardContainer>
     )
 }
