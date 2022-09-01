@@ -10,46 +10,28 @@ import {
 
 } from './styles'
 
-interface Category{
-    name: string,
-    icon: string
-}
+import {categories} from '../../../../utils/categories'
+
 
 interface transactionProps {
     data:{
         type: 'income' | 'outcome'
-        description: string,
+        name: string,
+        key: string
         price: string,
-        category: Category
         createdDate: string
     }
 }
 
 export function Transaction({data}:transactionProps){
-    const {createdDate,description,price, category,type} = data
+    const {createdDate,name,price,type,key} = data
 
-    function selectIcon(){
-        switch(category.name){
-            case ('Venda') :
-                return 'dollar-sign';
+    const transaction  = categories.find(category => category.key === key)
 
-            case ('Alimentação') :
-                return 'coffee';
-            
-            case ('Casa'):
-                return  'shopping-bag'
-
-            default:
-                return 'dollar-sign'
-        }
-        
-    }
-
-    const icon = selectIcon()
 
     return(
         <TransactionContainer>
-            <Description>{description}</Description>
+            <Description>{name}</Description>
             <PriceHighlight type={type}>
                 {type === 'outcome' && '- '}
                 {price}
@@ -57,10 +39,10 @@ export function Transaction({data}:transactionProps){
 
             <TransactionFooter>
                 <Category>
-                    <Icon name={icon}/>
-                    <CategoryName>{category.name}</CategoryName>
+                    <Icon name={transaction?.icon}/>
+                    <CategoryName>{transaction?.name}</CategoryName>
                 </Category>
-                <CriationDate>{createdDate}</CriationDate>
+                <CriationDate>{'2020'}</CriationDate>
 
             </TransactionFooter>
         </TransactionContainer>

@@ -1,7 +1,7 @@
-import React from "react";
-import { FlatList } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import React, { useEffect, useState } from "react";
+import { FlatList, Text, View } from "react-native";
 import { getBottomSpace } from "react-native-iphone-x-helper";
-
 
 import { Header } from "./components/Header";
 import { HighlighCard } from "./components/HighlighCard";
@@ -11,49 +11,33 @@ import {
     DashBoardContainer,
     TransactionsContainer,
     Title,
-  
-
 } from "./styles";
 
+interface TransactionProps  {
+    id: string
+    name: string,
+    amount: string,
+    createdDate: string
+    categoryKey: string
+    type: 'income' | 'outcome'
+}
 export function Dashboard(){
-    const transactions = [
-        {
-            id: 1,
-            type: 'income' as const,
-            description:"Desnvolvimento de site",
-            price:"R$ 5.000,00",
-            createdDate:"13/043/2022",
-            category:{
-                name: 'Casa',
-                icon: 'dollar-sign'
-            }
-        },
-        {
-            id: 2,
-            type: 'income' as const,
-            description:"Desnvolvimento de site",
-            price:"R$ 5.000,00",
-            createdDate:"13/043/2022",
-            category:{
-                name: 'Alimentação',
-                icon: 'dollar-sign'
-            }
-        },
-        {
-            id: 3,
-            type: 'outcome' as const,
-            description:"Desnvolvimento de site",
-            price:"R$ 5.000,00",
-            createdDate:"13/043/2022",
-            category:{
-                name: 'Venda',
-                icon: 'coffee'
-            }
-        },
-     
+    const [transactions,setTransactions] = useState<TransactionProps[]>([])
 
+    async function loadTransaction(){
+        const dataKey = '@gofinances:transactions'
+        const storage = await AsyncStorage.getItem(dataKey)
         
-    ] 
+        if(storage){
+            const storageFomated = JSON.parse(storage)
+            setTransactions(storageFomated)
+        }
+    }
+    console.log(transactions)
+    useEffect(() => {
+        loadTransaction()
+    },[])
+    console.log(transactions)
     return(
         <DashBoardContainer>
             <Header/>
@@ -83,14 +67,21 @@ export function Dashboard(){
 
                 <TransactionsContainer>
                     <Title>Listagem</Title>
+
                     <FlatList
                         data={transactions}
-                        keyExtractor={item => item.id.toString()}
-                        renderItem = { ({item}) => 
-                           <Transaction
-                                data = {item}
-                           />
-                        }
+                        keyExtractor={item => item.id}
+                        renderItem = { ({item}) =>(
+                            <Transaction
+                                data={{
+                                    createdDate: item.createdDate,
+                                    name: item.name,
+                                    key: item.categoryKey,
+                                    price: item.amount,
+                                    type: item.type
+                                }}
+                            />
+                        ) }
                         contentContainerStyle ={{
                             paddingBottom: getBottomSpace()
                         }}

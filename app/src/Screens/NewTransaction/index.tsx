@@ -6,8 +6,11 @@ import { useForm,Controller, FormProvider} from "react-hook-form";
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { InputForm } from "../../components/InputForm";
+import uuid from 'react-native-uuid'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SelectCategory } from "../../components/Form/SelectCategory";
 import { SelectCategoryModal } from "./components/SelectCategoryModal";
+import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
 import {
     Form,
@@ -15,7 +18,7 @@ import {
     TransactionsType,
     NewTransactionContainer,
 } from './styles'
-import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 
 const NewTransactionSchema = yup.object().shape({
@@ -39,6 +42,7 @@ export interface CreateNewTransactionSchema  {
 
 export function NewTransaction(){
     const [modalIsVisible, setModalIsVisible] = useState(false)
+    const navigation = useNavigation()
 
     const newTransactionForm = useForm<CreateNewTransactionSchema>({
         resolver: yupResolver(NewTransactionSchema),
@@ -56,7 +60,6 @@ export function NewTransaction(){
         handleSubmit, 
         control,
         formState: { isSubmitting,errors} 
-
     } = newTransactionForm
   
     function handleOpenSectCategoryModal(){
@@ -67,18 +70,57 @@ export function NewTransaction(){
         setModalIsVisible(false)
     }
     
-    function handleCreateNewTransaction(data: CreateNewTransactionSchema){
+    function checkFilds(data: CreateNewTransactionSchema){
         if(!data.type){
             return Alert.alert('selecione o tipo da tansação')
         }
-
+    
         if(!data.category.name){
             return Alert.alert('Selecione uma categoria')
         }
         
-        console.log(data)
-      
+    }
+
+    function redirectUserToDashBoard(){
+        navigation.navigate('Listagem')
         reset()
+    }
+
+    async function handleCreateNewTransaction(data: CreateNewTransactionSchema){
+        checkFilds(data)
+
+        try{
+            const {amount,category,name,type} = data
+            
+            const newTranasction = {
+                amount,
+                name,
+                type,
+                id: uuid.v4(), 
+                createdDate: new Date(),
+                categoryKey: category.key,
+            }
+            
+            const dataKey = '@gofinances:transactions'
+
+            const currentStorage = await AsyncStorage.getItem(dataKey)
+            const currentStorageFormated = currentStorage? JSON.parse(currentStorage): []
+
+            const storageUpdated = [
+                newTranasction,
+                ...currentStorageFormated,
+            ]
+            
+            const storageUpdatedInStringfy = JSON.stringify(storageUpdated)
+            await AsyncStorage.setItem(dataKey, storageUpdatedInStringfy)
+
+        }
+        catch(error){
+            console.error(error)
+            Alert.alert('não foi possível salvar')
+        }
+
+        redirectUserToDashBoard()
     }
         
     const currentCaterogy = watch('category')

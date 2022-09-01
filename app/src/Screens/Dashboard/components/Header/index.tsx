@@ -4,11 +4,11 @@ import {
     UserName, 
     Greeting, 
     PowerIcon,
-    ExitButton, 
+    LogoutButton, 
     HeaderContent,
     HeaderContainer,
 } from './styles'
-
+import {RectButton} from 'react-native-gesture-handler'
 export function Header(){
     return(
         <HeaderContainer>
@@ -20,9 +20,11 @@ export function Header(){
                     <UserName> João </UserName>
                 </Greeting>
 
-                <ExitButton>
+                <LogoutButton activeOpacity={.3}>
+
                     <PowerIcon name='power' />
-                </ExitButton>
+                </LogoutButton>
+
             </HeaderContent>
         </HeaderContainer>
     )

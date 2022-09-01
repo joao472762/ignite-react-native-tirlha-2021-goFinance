@@ -41,9 +41,7 @@ export const UserName = styled.Text`
     color: ${({theme}) => theme.colors.shape};
 `
 
-export const ExitButton = styled.TouchableOpacity`
-    
-`
+export const LogoutButton = styled.TouchableOpacity``
 
 export const PowerIcon = styled(Feather)`
     font-size: ${RFValue(24)}px;
