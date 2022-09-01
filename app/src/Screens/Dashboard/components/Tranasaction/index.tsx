@@ -26,7 +26,7 @@ interface transactionProps {
 export function Transaction({data}:transactionProps){
     const {createdDate,name,price,type,key} = data
 
-    const transaction  = categories.find(category => category.key === key)
+    const category  = categories.find(category => category.key === key)
 
 
     return(
@@ -39,8 +39,8 @@ export function Transaction({data}:transactionProps){
 
             <TransactionFooter>
                 <Category>
-                    <Icon name={transaction?.icon}/>
-                    <CategoryName>{transaction?.name}</CategoryName>
+                    <Icon name={category?.icon}/>
+                    <CategoryName>{category?.name}</CategoryName>
                 </Category>
                 <CriationDate>{'2020'}</CriationDate>
 

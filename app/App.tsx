@@ -4,6 +4,7 @@ import { ThemeProvider } from 'styled-components';
 import { Router } from './src/routes/app.routes';
 import { FontProvider } from './src/context/font';
 import { defaultTheme } from './src/global/styles/theme';
+import { TransactionsProvider } from './src/context/TrasactionsContext';
 
 export default function App() {
   return (
@@ -14,7 +15,9 @@ export default function App() {
         translucent 
         style="light" 
       />
+      <TransactionsProvider>
         <Router/>
+      </TransactionsProvider>
       </ThemeProvider>
     </FontProvider>
 

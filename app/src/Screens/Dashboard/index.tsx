@@ -1,7 +1,8 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 import { getBottomSpace } from "react-native-iphone-x-helper";
+import { TransactionsContext } from "../../context/TrasactionsContext";
 
 import { Header } from "./components/Header";
 import { HighlighCard } from "./components/HighlighCard";
@@ -22,22 +23,8 @@ interface TransactionProps  {
     type: 'income' | 'outcome'
 }
 export function Dashboard(){
-    const [transactions,setTransactions] = useState<TransactionProps[]>([])
-
-    async function loadTransaction(){
-        const dataKey = '@gofinances:transactions'
-        const storage = await AsyncStorage.getItem(dataKey)
-        
-        if(storage){
-            const storageFomated = JSON.parse(storage)
-            setTransactions(storageFomated)
-        }
-    }
-    console.log(transactions)
-    useEffect(() => {
-        loadTransaction()
-    },[])
-    console.log(transactions)
+    const {transactions} = useContext(TransactionsContext)
+    
     return(
         <DashBoardContainer>
             <Header/>
