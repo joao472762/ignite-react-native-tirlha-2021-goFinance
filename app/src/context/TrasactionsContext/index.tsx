@@ -11,7 +11,8 @@ interface TransactionsProps  {
 }
 
 interface TransactionsContextType {
-    transactions: TransactionsProps[]
+    transactions: TransactionsProps[],
+    transactionsIsLoading: boolean
     addNewTransaction: (newTransaction: TransactionsProps) => void
 }
 
@@ -23,6 +24,7 @@ interface TransactionsProviderProps {
 
 export  function TransactionsProvider({children}:TransactionsProviderProps){
     const [transactions,setTransactions] = useState<TransactionsProps[]>([])
+    const [transactionsIsLoading, setTransactionsIsLoading] = useState(true)
 
     async function loadTransactions(){
         const dataKey = '@gofinances:transactions'
@@ -31,6 +33,7 @@ export  function TransactionsProvider({children}:TransactionsProviderProps){
              const storage = JSON.parse(response)
              setTransactions(storage)
         }
+        setTransactionsIsLoading(false)
      }
     
      useEffect(() => {
@@ -41,10 +44,11 @@ export  function TransactionsProvider({children}:TransactionsProviderProps){
         setTransactions(state => [newTransaction, ...state])
     }
 
-    return(
+    return( 
         <TransactionsContext.Provider value={{
             transactions,
-            addNewTransaction
+            addNewTransaction,
+            transactionsIsLoading
         }}
         >
             {children}

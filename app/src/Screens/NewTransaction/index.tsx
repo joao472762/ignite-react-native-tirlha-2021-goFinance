@@ -1,15 +1,17 @@
 import * as yup from 'yup'
+import uuid from 'react-native-uuid'
 import { useContext, useState } from "react";
 import { yupResolver} from '@hookform/resolvers/yup'
+import { useNavigation } from '@react-navigation/native';
 import { useForm,Controller, FormProvider} from "react-hook-form";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { Button } from "../../components/Button";
 import { Header } from "../../components/Header";
 import { InputForm } from "../../components/InputForm";
-import uuid from 'react-native-uuid'
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { SelectCategory } from "../../components/Form/SelectCategory";
 import { SelectCategoryModal } from "./components/SelectCategoryModal";
+import { TransactionsContext } from '../../context/TrasactionsContext';
 import { Alert, Keyboard, TouchableWithoutFeedback } from "react-native";
 import { TransactionTypeButton } from "../../components/Form/TransactionTypeButton";
 import {
@@ -18,14 +20,11 @@ import {
     TransactionsType,
     NewTransactionContainer,
 } from './styles'
-import { useNavigation } from '@react-navigation/native';
-import { TransactionsContext } from '../../context/TrasactionsContext';
 
 
 const NewTransactionSchema = yup.object().shape({
     name: yup.string().required('Nome é obrigatório'),
-    amount: 
-    yup.number()
+    amount: yup.number()
         .typeError('digite um número')
         .positive('digite um número positivo')
         .required('digite algum valor')
@@ -42,8 +41,8 @@ export interface CreateNewTransactionSchema  {
 }
 
 export function NewTransaction(){
-    const [modalIsVisible, setModalIsVisible] = useState(false)
     const navigation = useNavigation()
+    const [modalIsVisible, setModalIsVisible] = useState(false)
     const {addNewTransaction} = useContext(TransactionsContext)
 
     const newTransactionForm = useForm<CreateNewTransactionSchema>({
@@ -74,12 +73,16 @@ export function NewTransaction(){
     
     function checkFilds(data: CreateNewTransactionSchema){
         if(!data.type){
-            return Alert.alert('selecione o tipo da tansação')
+            Alert.alert('selecione o tipo da tansação')
+            return false
         }
     
         if(!data.category.name){
-            return Alert.alert('Selecione uma categoria')
+            Alert.alert('Selecione uma categoria')
+            return false
         }
+
+        return true
         
     }
 
@@ -89,7 +92,9 @@ export function NewTransaction(){
     }
 
     async function handleCreateNewTransaction(data: CreateNewTransactionSchema){
-        checkFilds(data)
+        if(checkFilds(data) === false){
+            return
+        }
 
         try{
             const {amount,category,name,type} = data
@@ -181,8 +186,10 @@ export function NewTransaction(){
                     </InputsArea>
 
                     <Button 
-                        title="Enviar" onPress={handleSubmit(handleCreateNewTransaction)}
-                        disabled = {isSubmitting}
+                        title="Enviar"
+                        disabled={isSubmitting}
+                        onPress={handleSubmit(handleCreateNewTransaction)}
+                       
                     />
                 </Form>
 

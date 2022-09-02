@@ -14,9 +14,9 @@ interface HighlighCardProps {
     type: 'income' | 'outcome' | 'total',
     title: string,
     amount: string,
-    lastAleration: string
+    lastAlteration: string | undefined
 }
-export function HighlighCard({amount,lastAleration,title,type}: HighlighCardProps){
+export function Card({amount,lastAlteration,title,type}: HighlighCardProps){
     const iconType = {
         income: 'arrow-up-circle',
         outcome: 'arrow-down-circle',
@@ -32,7 +32,7 @@ export function HighlighCard({amount,lastAleration,title,type}: HighlighCardProp
 
                 <View>
                     <Amount type={type}>{amount}</Amount>
-                    <LastAlteration type={type}>{lastAleration}</LastAlteration>
+                    <LastAlteration type={type}>{lastAlteration}</LastAlteration>
                 </View>
             </HighlighCardContainer>
     )

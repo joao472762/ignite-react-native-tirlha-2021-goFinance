@@ -1,11 +1,9 @@
 import {Feather} from '@expo/vector-icons'
 import styled from "styled-components/native"
-import { TouchableOpacity } from "react-native"
+import { RectButton } from 'react-native-gesture-handler'
 import { RFValue } from "react-native-responsive-fontsize"
 
-export const SelectCategoryContainer = styled(TouchableOpacity).attrs({
-    activeOpacicy: 0.7
-})`
+export const SelectCategoryContainer = styled(RectButton)`
     flex-direction: row;
     align-items: center;
     justify-content: space-between;

@@ -1,8 +1,9 @@
 import { RFValue } from "react-native-responsive-fontsize";
 import styled from "styled-components/native";
+import {GestureHandlerRootView} from 'react-native-gesture-handler'
+import { View } from "react-native";
 
-
-export const NewTransactionContainer = styled.View`
+export const NewTransactionContainer = styled(GestureHandlerRootView)`
     flex: 1;
 
     background-color: ${( {theme} ) => theme.colors.background};
@@ -23,6 +24,11 @@ export const TransactionsType = styled.View`
 
     margin-top: ${RFValue(16)}px;
     margin-bottom: ${RFValue(16)}px;
+`
+export const LoadContainer = styled.View`
+    flex: 1;
+    align-items: center;
+    justify-content:  center;
 `
 
 

@@ -8,7 +8,7 @@ import {
     HeaderContent,
     HeaderContainer,
 } from './styles'
-import {RectButton} from 'react-native-gesture-handler'
+
 export function Header(){
     return(
         <HeaderContainer>

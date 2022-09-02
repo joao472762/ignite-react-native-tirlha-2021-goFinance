@@ -2,7 +2,7 @@ import {Feather} from '@expo/vector-icons'
 import styled from "styled-components/native"
 import { RFValue } from "react-native-responsive-fontsize"
 
-import { defaultTheme } from "../../../../global/styles/theme"
+import { defaultTheme } from "../../../../../../global/styles/theme"
 
 const {colors} = defaultTheme
 
