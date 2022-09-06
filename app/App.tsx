@@ -8,6 +8,8 @@ import { Router } from './src/routes/app.routes';
 import { FontProvider } from './src/context/font';
 import { defaultTheme } from './src/global/styles/theme';
 import { TransactionsProvider } from './src/context/TrasactionsContext';
+import { SignIn } from './src/Screens/SignIn';
+import { AuthContextProvider } from './src/context/AuthContext';
 
 export default function App() {
   return (
@@ -18,9 +20,11 @@ export default function App() {
         translucent 
         style="light" 
       />
-      <TransactionsProvider>
-        <Router/>
-      </TransactionsProvider>
+      <AuthContextProvider>
+        <TransactionsProvider>
+          <SignIn/> 
+        </TransactionsProvider>
+      </AuthContextProvider>
       </ThemeProvider>
     </FontProvider>
 

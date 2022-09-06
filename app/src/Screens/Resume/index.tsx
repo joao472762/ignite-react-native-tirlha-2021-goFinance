@@ -1,8 +1,7 @@
 import { VictoryPie } from "victory-native";
 import { useTheme } from "styled-components";
-import { useContext, useState } from "react";
+import { useContext, useState } from "react";               
 import { RFValue } from "react-native-responsive-fontsize";
-
 
 import { Header } from "../../components/Header";
 import { useSumary } from "../../hooks/useSumary";
