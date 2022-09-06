@@ -5,7 +5,6 @@ import { View } from "react-native";
 
 export const NewTransactionContainer = styled(GestureHandlerRootView)`
     flex: 1;
-
     background-color: ${( {theme} ) => theme.colors.background};
 `
 export const Form = styled.View`

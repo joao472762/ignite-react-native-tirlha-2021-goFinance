@@ -46,14 +46,20 @@ export function useSumary(){
         }
     })
    
-    const firstDateUpdate = transactions.reduce((acc, transaction) => {
-        if( acc >= new Date(transaction.createdDate)){
-            acc = new Date(transaction.createdDate)
+    const DateUpdate = transactions.reduce((acc, transaction) => {
+        if( acc.lastDateUpdate >= new Date(transaction.createdDate)){
+            acc.firstDateUpdate = new Date(transaction.createdDate)
+        }
+        else{
+            acc.lastDateUpdate = new Date(transaction.createdDate)
         }
         return acc
-    }, new Date())
+    }, {
+        firstDateUpdate: new Date(),
+        lastDateUpdate: new Date()
+    })
     
-    const firstDateUpdateFormated =  dateFormatterWithoutYear.format(firstDateUpdate)
+    const firstDateUpdateFormated =  dateFormatterWithoutYear.format(DateUpdate.firstDateUpdate)
     
     const sumaryFormated = {
         income: {
@@ -69,11 +75,12 @@ export function useSumary(){
             lastUpdate: dateFormatterWithoutYear.format(sumary.total.lastUpdate)
         }
     }
-
+    const {firstDateUpdate,lastDateUpdate}  = DateUpdate
     return {
         sumary,
         sumaryFormated,
         firstDateUpdate,
+        lastDateUpdate,
         firstDateUpdateFormated,
     }
 }

@@ -22,7 +22,7 @@ export function TransactionTypeButton({type,isActive,...res}: TransactionTypeBut
         >
            <Icon name={iconType[type]} type={type}/>
             <Title>
-                {type}
+                {type ==='Income' ? 'Entrada' : 'Saída'}
             </Title>
 
         </TransactionTypeButtonContainer>

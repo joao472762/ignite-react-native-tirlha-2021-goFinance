@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import { Dashboard } from '../Screens/Dashboard';
 import { NewTransaction } from '../Screens/NewTransaction';
+import { Resume } from '../Screens/Resume';
 
 
 const {Navigator,Screen} = createBottomTabNavigator()
@@ -57,7 +58,7 @@ export function Router(){
                 />
                 <Screen 
                     name='Resumo' 
-                    component={NewTransaction}
+                    component={Resume}
                     options = {{
                         tabBarIcon: ({color,size}) => (
                             <Feather
