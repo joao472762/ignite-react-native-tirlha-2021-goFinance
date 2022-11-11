@@ -1,22 +1,21 @@
 import { Platform } from 'react-native';
 import { Feather } from '@expo/vector-icons'
 import { useTheme } from 'styled-components';
-import { NavigationContainer } from '@react-navigation/native';
+
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-import { Dashboard } from '../Screens/Dashboard';
-import { NewTransaction } from '../Screens/NewTransaction';
-import { Resume } from '../Screens/Resume';
+import { Dashboard } from '../../Screens/Dashboard';
+import { NewTransaction } from '../../Screens/NewTransaction';
+import { Resume } from '../../Screens/Resume';
 
 
 const {Navigator,Screen} = createBottomTabNavigator()
 
-export function Router(){
+export function AuthRoutes(){
 
     const {colors} = useTheme()
 
     return(
-        <NavigationContainer>
             <Navigator
                 sceneContainerStyle={{}}
                 screenOptions={{
@@ -70,6 +69,6 @@ export function Router(){
                     }}
                 />
             </Navigator>
-        </NavigationContainer>
+        
     )
 }

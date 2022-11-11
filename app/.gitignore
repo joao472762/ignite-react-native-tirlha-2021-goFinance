@@ -56,3 +56,4 @@ dist/
 
 # Myself
 *.txt
+.env

@@ -1,3 +1,4 @@
+import { useAuth } from '../../../../hooks/useAuth'
 import {
     Avatar,
     Menssage, 
@@ -10,14 +11,17 @@ import {
 } from './styles'
 
 export function Header(){
+    const {user} = useAuth()
+    const [userFirstName] = user!?.name.split(' ')
+   
     return(
         <HeaderContainer>
             <HeaderContent>
-                <Avatar source={{uri: 'https://avatars.githubusercontent.com/u/84108989?v=4'}}/>
+                <Avatar source={{uri: user?.avatarUrl}}/>
 
                 <Greeting>
                     <Menssage> Olá, </Menssage>
-                    <UserName> João </UserName>
+                    <UserName> {userFirstName} </UserName>
                 </Greeting>
 
                 <LogoutButton activeOpacity={.3}>

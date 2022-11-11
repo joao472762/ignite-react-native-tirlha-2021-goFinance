@@ -2,6 +2,7 @@ import * as Font from 'expo-font'
 import { View } from "react-native";
 import * as SplashScreen from 'expo-splash-screen'
 import { ReactNode, useCallback, useEffect, useState } from "react";
+
 import {Poppins_500Medium, Poppins_400Regular, Poppins_700Bold} from '@expo-google-fonts/poppins'
 
 interface FontProviderProps{

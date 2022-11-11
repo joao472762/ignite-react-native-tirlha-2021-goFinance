@@ -11,7 +11,7 @@ export function SignSocialButton({svg: Svg, title, ...rest}: SignButtonProps){
     return(
         <SignButtonSocialContainer>
 
-            <SignButton >
+            <SignButton {...rest} >
                 <SvgContainer>
                     <Svg/>
                 </SvgContainer>
