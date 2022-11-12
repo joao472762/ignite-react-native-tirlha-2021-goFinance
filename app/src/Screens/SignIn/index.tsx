@@ -13,17 +13,35 @@ import AppleSvg from '../../assets/apple.svg'
 import MoneySvg from '../../assets/money.svg'
 import { SignSocialButton } from './components/SignInSocialButton'
 import { useAuth } from '../../hooks/useAuth'
-import {Alert} from 'react-native'
+import {Alert, Platform} from 'react-native'
+import { useState } from 'react'
+import { Loader } from './components/Loader'
 
 export function SignIn(){
-    const {signIn} = useAuth()
+    const [isLoading, setIsLoading] = useState(false)
+    const {signIn, SignInWithApple} = useAuth()
 
     async function handleSignInWithGoogle(){
         try {
-            signIn()
+            setIsLoading(true)
+            return signIn()
+
         } catch (error) {
             console.error(error)
             Alert.alert('não foi possível realizar o login')
+            setIsLoading(false)
+        } 
+    }
+
+    async function handleSignInWithApple(){
+        try {
+            setIsLoading(true)
+            return SignInWithApple()
+
+        } catch (error) {
+            console.error(error)
+            Alert.alert('não foi possível realizar o login')
+            setIsLoading(false)
         }
     }
     return(
@@ -49,11 +67,20 @@ export function SignIn(){
                         svg={GoogleSvg}
                         onPress={handleSignInWithGoogle}
                     />
-                    <SignSocialButton
-                        title='Entrar com Apple'
-                        svg={AppleSvg}
-                    />
+                    {
+                        Platform.OS === 'ios' && (
+                            <SignSocialButton
+                                title='Entrar com Apple'
+                                svg={AppleSvg}
+                                onPress={handleSignInWithApple}
+                            />
+
+                        )
+                    }
                 </LoginWays>
+                {
+                    isLoading && (<Loader/>)
+                }
             </Footer>
             
         </SignInContainer>

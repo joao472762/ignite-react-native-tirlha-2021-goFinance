@@ -7,10 +7,8 @@ import { AuthRoutes } from './auth/app.routes';
 export function Routes(){
     const {user} = useAuth()
     return (
-        <TransactionsProvider>
             <NavigationContainer>
                 {user ? <AuthRoutes/> : <SignIn/>}
             </NavigationContainer>
-        </TransactionsProvider>
     )
 }

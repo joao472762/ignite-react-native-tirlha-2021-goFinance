@@ -1,5 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage"
 import { createContext, ReactNode, useEffect, useState } from "react"
+import { useAuth } from "../../hooks/useAuth"
 
 interface TransactionsProps  {
     id: string
@@ -25,9 +26,10 @@ interface TransactionsProviderProps {
 export  function TransactionsProvider({children}:TransactionsProviderProps){
     const [transactions,setTransactions] = useState<TransactionsProps[]>([])
     const [transactionsIsLoading, setTransactionsIsLoading] = useState(true)
+    const {user} = useAuth()
 
     async function loadTransactions(){
-        const dataKey = '@gofinances:transactions'
+        const dataKey = `@gofinances:transactions_user:${user?.id}`
         const response = await AsyncStorage.getItem(dataKey)
         if(response){
              const storage = JSON.parse(response)

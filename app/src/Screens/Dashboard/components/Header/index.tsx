@@ -1,3 +1,7 @@
+import { isLoading } from 'expo-font'
+import { useState } from 'react'
+import { Alert } from 'react-native'
+import styled from 'styled-components/native'
 import { useAuth } from '../../../../hooks/useAuth'
 import {
     Avatar,
@@ -11,8 +15,34 @@ import {
 } from './styles'
 
 export function Header(){
-    const {user} = useAuth()
+    const {user,signOut} = useAuth()
+    const [disabledButton, setDisableButton] = useState(false)
+    
     const [userFirstName] = user!?.name.split(' ')
+
+    async function handleSignOut(){
+        try {
+            setDisableButton(true)
+            
+            Alert.alert('Sair da Conta','tem certeza, que quer sair da usa conta?',[
+                {
+                    text: 'cancelar',
+                    style: 'cancel',
+                    onPress: () => setDisableButton(false)
+                },
+                {
+                    text: 'sair',
+                    style: 'destructive',
+                    onPress: () => {signOut()}
+
+
+                }
+            ])
+        } catch (error) {
+            console.error(error)
+            Alert.alert('não foi possível sair da aplicação')
+        }
+    }
    
     return(
         <HeaderContainer>
@@ -24,8 +54,11 @@ export function Header(){
                     <UserName> {userFirstName} </UserName>
                 </Greeting>
 
-                <LogoutButton activeOpacity={.3}>
-
+                <LogoutButton 
+                    onPress={handleSignOut} 
+                    activeOpacity={.3}
+                    disabled={disabledButton}
+                >
                     <PowerIcon name='power' />
                 </LogoutButton>
 

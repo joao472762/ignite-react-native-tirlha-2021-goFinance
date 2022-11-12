@@ -20,6 +20,7 @@ import {
     TransactionsType,
     NewTransactionContainer,
 } from './styles'
+import { useAuth } from '../../hooks/useAuth';
 
 
 const NewTransactionSchema = yup.object().shape({
@@ -44,6 +45,8 @@ export function NewTransaction(){
     const navigation = useNavigation()
     const [modalIsVisible, setModalIsVisible] = useState(false)
     const {addNewTransaction} = useContext(TransactionsContext)
+    
+    const {user} = useAuth()
 
     const newTransactionForm = useForm<CreateNewTransactionSchema>({
         resolver: yupResolver(NewTransactionSchema),
@@ -108,7 +111,7 @@ export function NewTransaction(){
                 categoryKey: category.key,
             }
             
-            const dataKey = '@gofinances:transactions'
+            const dataKey = `@gofinances:transactions_user:${user?.id}`
 
             const currentStorage = await AsyncStorage.getItem(dataKey)
             const currentStorageFormated = currentStorage? JSON.parse(currentStorage): []

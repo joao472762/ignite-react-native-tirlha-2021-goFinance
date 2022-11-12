@@ -7,6 +7,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { Dashboard } from '../../Screens/Dashboard';
 import { NewTransaction } from '../../Screens/NewTransaction';
 import { Resume } from '../../Screens/Resume';
+import { TransactionsProvider } from '../../context/TrasactionsContext';
 
 
 const {Navigator,Screen} = createBottomTabNavigator()
@@ -16,6 +17,7 @@ export function AuthRoutes(){
     const {colors} = useTheme()
 
     return(
+        <TransactionsProvider>
             <Navigator
                 sceneContainerStyle={{}}
                 screenOptions={{
@@ -69,6 +71,7 @@ export function AuthRoutes(){
                     }}
                 />
             </Navigator>
+        </TransactionsProvider>
         
     )
 }

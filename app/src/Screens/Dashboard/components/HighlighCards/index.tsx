@@ -22,7 +22,7 @@ export function HighlighCards(){
             lastAlteration = {
                 transactionsIncomeExist 
                 ? `Útima entrada dia ${sumaryFormated.income.lastUpdate}`
-                :''
+                :'Não há transações'
             }
         />
         <Card
@@ -31,7 +31,7 @@ export function HighlighCards(){
             amount={sumaryFormated.outcome.amount}
             lastAlteration={ transactionsOutcomeExist 
                 ?`Útima saída dia ${sumaryFormated.outcome.lastUpdate}`
-                : ''
+                : 'Não há transações'
             }
         />
         <Card
