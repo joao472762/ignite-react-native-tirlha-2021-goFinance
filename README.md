@@ -63,9 +63,6 @@ que permite gerar gráficos dinâmicos com uma imensa facilidade
 
 ![image](https://user-images.githubusercontent.com/84108989/201453701-9cc7aaf3-d29c-4158-9d1a-53f3451f41e8.png)
 
-**tela de Resumo das transações **
-
-</hr>
 
 
 
